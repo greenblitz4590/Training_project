@@ -61,15 +61,18 @@ public class OI { //GEVALD
 
 
 	private void initButtons() {
-//		Extender.getInstance().setDefaultCommand(new moveByJoysticks());
-//		Elbow.getInstance().setDefaultCommand(new elbowMoveByJoysticks());
+		Extender.getInstance().setDefaultCommand(new moveByJoysticks());
+		Elbow.getInstance().setDefaultCommand(new elbowMoveByJoysticks());
 //		mainJoystick.A.onTrue(new InstantCommand(() -> Claw.getInstance().toggleSolenoid()));
 //		mainJoystick.B.whileTrue(new StartEndCommand(() -> Claw.getInstance().motorGrip(), () -> Claw.getInstance().stopMotor()));
 //		mainJoystick.Y.whileTrue(new StartEndCommand(() -> Claw.getInstance().motorEject(), () -> Claw.getInstance().stopMotor()));
-		mainJoystick.A.whileTrue(new StartEndCommand(() -> Elbow.getInstance().debugSetPower(0.3), () -> Elbow.getInstance().stop(), Elbow.getInstance()));
-		mainJoystick.B.whileTrue(new StartEndCommand(() -> Elbow.getInstance().debugSetPower(-0.3), () -> Elbow.getInstance().stop(), Elbow.getInstance()));
-		mainJoystick.X.whileTrue(new StartEndCommand(() -> Extender.getInstance().debugSetPower(0.5), () -> Extender.getInstance().stop(), Extender.getInstance()));
-		mainJoystick.Y.whileTrue(new StartEndCommand(() -> Extender.getInstance().debugSetPower(-0.5), () -> Extender.getInstance().stop(), Extender.getInstance()));
+//		mainJoystick.A.whileTrue(new StartEndCommand(() -> Elbow.getInstance().debugSetPower(0.3), () -> Elbow.getInstance().stop(), Elbow.getInstance()));
+//		mainJoystick.B.whileTrue(new StartEndCommand(() -> Elbow.getInstance().debugSetPower(-0.3), () -> Elbow.getInstance().stop(), Elbow.getInstance()));
+//		mainJoystick.X.whileTrue(new StartEndCommand(() -> Extender.getInstance().debugSetPower(0.5), () -> Extender.getInstance().stop(), Extender.getInstance()));
+//		mainJoystick.Y.whileTrue(new StartEndCommand(() -> Extender.getInstance().debugSetPower(-0.5), () -> Extender.getInstance().stop(), Extender.getInstance()));
+		mainJoystick.A.whileTrue(new DebugFindAcc(2));
+		mainJoystick.B.whileTrue(new DebugFindAcc(4));
+		mainJoystick.X.whileTrue(new DebugFindAcc(6));
 		mainJoystick.POV_UP.toggleOnTrue(new ExtendToLength(0.20));
 		mainJoystick.POV_LEFT.toggleOnTrue(new RotateToAngleRadians(Units.degreesToRadians(30)));
 		mainJoystick.START.onTrue(new InstantCommand(() -> Extender.getInstance().resetLength()));
