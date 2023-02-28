@@ -73,12 +73,9 @@ public class RobotMap {
 
     public static class LED {
 
-        public static final int LENGTH = 100;
-        public static final int PORT = 0;
-        public static final double BLINKING_ON_TIME = 0.4;
-
-        public static final double BLINKING_OFF_TIME = 0.2;
-        public static final Color DEFAULT_COLOR = Color.kFloralWhite;
+	    public static final int LENGTH = 100;
+	    public static final int PORT = 0;
+        public static final double BLINKING_TIME = 0.2;
     }
 
     public static class Ultrasonic {
@@ -167,7 +164,7 @@ public class RobotMap {
 
         public static SdsSwerveModule.SdsSwerveModuleConfigObject SdsModuleFrontLeft = new SdsSwerveModule.SdsSwerveModuleConfigObject(1, 0, 0, false, 0.863 ); //front left
 
-        public static SdsSwerveModule.SdsSwerveModuleConfigObject SdsModuleFrontRight = new SdsSwerveModule.SdsSwerveModuleConfigObject(3, 2, 3, true, 0.303 ); //front right
+        public static SdsSwerveModule.SdsSwerveModuleConfigObject SdsModuleFrontRight = new SdsSwerveModule.SdsSwerveModuleConfigObject(3, 2, 9, true, 0.303 ); //front right
 
 
         public static SdsSwerveModule.SdsSwerveModuleConfigObject SdsModuleBackLeft = new SdsSwerveModule.SdsSwerveModuleConfigObject(5, 4, 1, false, 0.726); //back left
@@ -224,7 +221,8 @@ public class RobotMap {
 
     public static class RotatingBelly {
         public static final int MOTOR_ID = 15;
-        public static final double ROTATING_POWER = 0.5;
+        public static final double ROTATING_TIME = 0.8;
+        public static final double ROTATING_POWER = 0.8;
         public static final int MACRO_SWITCH_DIO_PORT = 4;
 
         public static final double ROTATE_OUT_OF_DOOR_TIME = 0.5;
@@ -247,8 +245,7 @@ public class RobotMap {
             
             COMMUNITY_PRE_GRID(Extender.MAX_ENTRANCE_LENGTH, CONE_HIGH.angleInRadians),
 
-            INTAKE_GRAB_POSITION(0.31, 0.092),
-            INTAKE_DROP_POSITION(0, Math.toRadians(-90) -STARTING_ANGLE_RELATIVE_TO_GROUND),
+            INTAKE_GRAB_POSITION(0.31, 0.092+ Math.toRadians(2.5)),
             PRE_INTAKE_GRAB_POSITION(0.1,
                     Math.toRadians(-90) -STARTING_ANGLE_RELATIVE_TO_GROUND),
 
@@ -311,6 +308,8 @@ public class RobotMap {
             public static final int SOLENOID_OPEN_CLAW_ID = 4;
             public static final int SOLENOID_CLOSED_CLAW_ID = 0;
             public static final double MOTOR_POWER_GRIP = 0.3;
+
+            public static final double MOTOR_POWER_CONE = 0.6;
             public static final double MOTOR_POWER_RELEASE = -0.3;
 
             public static final double TIME_OF_GRIP_CONSTANT = 2;
