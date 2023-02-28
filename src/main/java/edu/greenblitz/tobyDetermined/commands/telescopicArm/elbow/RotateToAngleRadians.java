@@ -14,18 +14,14 @@ public class RotateToAngleRadians extends ElbowCommand {
 
     private double legalGoalAngle;
     private double wantedAngle;
-    private boolean stop;
     private TrapezoidProfile trapezoidProfile;
     private Timer timer;
+
 
     public RotateToAngleRadians(double angle){
         wantedAngle = angle;
         timer = new Timer();
-    }
 
-    public RotateToAngleRadians(double angle, boolean stop){
-        this(angle);
-        this.stop = stop;
     }
 
     @Override
@@ -53,16 +49,12 @@ public class RotateToAngleRadians extends ElbowCommand {
 
     @Override
     public boolean isFinished() {
-        if(stop){
-            return elbow.isAtAngle(legalGoalAngle) && elbow.isNotMoving();
-        }
         return elbow.isAtAngle(legalGoalAngle);
     }
 
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-        elbow.stop();
         SmartDashboard.putBoolean("is at angle?", true);
     }
 }
