@@ -91,14 +91,14 @@ public class RobotMap {
 			public static final double ROBOT_LENGTH_IN_METERS = 0.69;
 			public static final double ROBOT_WIDTH_IN_METERS = 0.79;
 			
-			public static final double MAX_VELOCITY = 4;
-			public static final double MAX_ACCELERATION = 4;
+			public static final double MAX_VELOCITY = 4; //todo calibrate
+			public static final double MAX_ACCELERATION = 4; //todo calibrate
 			public static final double MAX_ANGULAR_SPEED = 8;
 			public static final double MAX_ANGULAR_ACCELERATION = 20; //todo calibrate
 			public static final int LAMPREY_AVERAGE_BITS = 2;
 			
 			
-			public static final PIDConstants TRANSLATION_PID = new PIDConstants(2, 0, 0);
+			public static final PIDConstants TRANSLATION_PID = new PIDConstants(3, 1, 0);
 			
 			public static final PIDConstants ROTATION_PID = new PIDConstants(2, 0, 0);
 			

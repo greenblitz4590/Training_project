@@ -39,6 +39,8 @@ public class Robot extends TimedRobot {
 		AutonomousSelector.getInstance();
 		//swerve
 		
+		SwerveChassis.getInstance().setIdleModeBrake();
+		
 		SwerveChassis.getInstance().resetChassisPose();
 		SwerveChassis.getInstance().resetAllEncoders();
 	}
@@ -78,7 +80,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 		CommandScheduler.getInstance().cancelAll();
-		SwerveChassis.getInstance().setIdleModeCoast();
 	}
 	
 	@Override
@@ -109,6 +110,10 @@ public class Robot extends TimedRobot {
    */
 	@Override
 	public void autonomousInit() {
+		
+		SwerveChassis.getInstance().setIdleModeBrake();
+		
+		
 		Command command = AutonomousSelector.getInstance().getChosenValue().autonomousCommand;
 		Claw.getInstance().coneCatchMode();
 		Grid.init();

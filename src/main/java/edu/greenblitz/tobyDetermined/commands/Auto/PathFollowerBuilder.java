@@ -7,15 +7,27 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.greenblitz.tobyDetermined.Field;
 import edu.greenblitz.tobyDetermined.RobotMap;
+import edu.greenblitz.tobyDetermined.commands.MultiSystem.FullIntake;
+import edu.greenblitz.tobyDetermined.commands.MultiSystem.GripFromBelly;
+import edu.greenblitz.tobyDetermined.commands.intake.extender.ExtendRoller;
+import edu.greenblitz.tobyDetermined.commands.intake.extender.RetractRoller;
+import edu.greenblitz.tobyDetermined.commands.intake.roller.RunRoller;
+import edu.greenblitz.tobyDetermined.commands.intake.roller.StopRoller;
+import edu.greenblitz.tobyDetermined.commands.rotatingBelly.RotateOutDoorDirection;
 import edu.greenblitz.tobyDetermined.commands.swerve.MoveToPose;
 import edu.greenblitz.tobyDetermined.commands.swerve.balance.bangBangBalance.FullBalance;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.DropCone;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.EjectCube;
+import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.GripBelly;
+import edu.greenblitz.tobyDetermined.commands.telescopicArm.goToPosition.GoToPosition;
+import edu.greenblitz.tobyDetermined.subsystems.LED;
 import edu.greenblitz.tobyDetermined.subsystems.swerve.SwerveChassis;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import java.util.HashMap;
@@ -41,6 +53,17 @@ public class PathFollowerBuilder extends SwerveAutoBuilder {
         eventMap.put("MoveToOutRamp", new MoveToPose(Field.PlacementLocations.OUT_PRE_BALANCE_BLUE, true));
         eventMap.put("BalanceFromOut", new FullBalance(true));
         eventMap.put("BalanceFromIn", new FullBalance(false));
+        eventMap.put("gripFromFloor",new ExtendRoller().alongWith(
+                new RunRoller(),
+                new RotateOutDoorDirection()
+        ).raceWith(new WaitCommand(1)).andThen(
+                new StopRoller().alongWith(new RetractRoller()),
+                new GripFromBelly()
+                )
+        
+        );
+        
+        eventMap.put("led", new InstantCommand( () ->  LED.getInstance().setColor(Color.kOrange)));
     }
 
     private static PathFollowerBuilder instance;
