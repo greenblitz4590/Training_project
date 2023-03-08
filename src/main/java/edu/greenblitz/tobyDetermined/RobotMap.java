@@ -71,7 +71,13 @@ public class RobotMap {
 	}
 	
 	public static class LED {
-		
+
+		public static final int ROBOT_INDICATOR_START = 10;
+
+		public static final int VISION_START = 0;
+		public static final int VISION_END = ROBOT_INDICATOR_START -1;
+
+
 		public static final int LENGTH = 100;
 		public static final int PORT = 0;
 		public static final double BLINKING_TIME = 0.2;

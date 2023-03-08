@@ -1,6 +1,7 @@
 package edu.greenblitz.tobyDetermined.subsystems;
 
 import edu.greenblitz.tobyDetermined.RobotMap;
+import edu.greenblitz.tobyDetermined.subsystems.Limelight.MultiLimelight;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,17 +33,33 @@ public class LED extends GBSubsystem {
     }
 
     public void setColor(Color color) {
-        for (int i = 0; i < this.ledBuffer.getLength(); i++) {
+        for (int i = RobotMap.LED.ROBOT_INDICATOR_START; i < this.ledBuffer.getLength(); i++) {
             this.ledBuffer.setLED(i, color);
-            SmartDashboard.putNumber("led num", i);
         }
+        this.addressableLED.setData(ledBuffer);
+    }
+
+    public void setColor(Color color,Section section) {
+
+        switch (section){
+            case OTHER:
+                for (int i = RobotMap.LED.ROBOT_INDICATOR_START; i < this.ledBuffer.getLength(); i++) {
+                    this.ledBuffer.setLED(i, color);
+                }
+                break;
+            case VISION:
+                for (int i = RobotMap.LED.VISION_START; i < RobotMap.LED.VISION_END; i++) {
+                    this.ledBuffer.setLED(i, color);
+                }
+        }
+
+
         this.addressableLED.setData(ledBuffer);
     }
     public void setColor(int i, Color color) {
         this.ledBuffer.setLED(i, color);
         this.addressableLED.setData(ledBuffer);
     }
-
 
     public void turnOff (){
         setColor(new Color(0,0,0));
@@ -56,6 +73,11 @@ public class LED extends GBSubsystem {
             setColor(i,new Color(0,0,0));
         }
     }
+
+    public void turnOff (Section section){
+        setColor(new Color(0,0,0),section);
+    }
+
 
 
 
@@ -72,4 +94,17 @@ public class LED extends GBSubsystem {
         this.addressableLED.setData(ledBuffer);
     }
 
+    public enum Section {
+        VISION,OTHER;
+    }
+
+
+    @Override
+    public void periodic() {
+        if(!MultiLimelight.getInstance().getFirstAvailableTarget().isEmpty()){
+            setColor(Color.kBlue,Section.VISION);
+        }else{
+            setColor(Color.kFirstRed,Section.VISION);
+        }
+    }
 }
