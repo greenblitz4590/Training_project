@@ -65,7 +65,7 @@ public class Claw extends GBSubsystem {
     }
 
     public void motorGrip() {
-        motor.set( RobotMap.TelescopicArm.Claw.MOTOR_POWER_CONE);
+        motor.set(RobotMap.TelescopicArm.Claw.MOTOR_POWER_CONE);
     }
 
     public void motorGrip(double power){

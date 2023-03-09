@@ -51,6 +51,8 @@ public class CombineJoystickMovement extends SwerveCommand {
 	@Override
 	public void end(boolean interrupted) {
 		super.end(interrupted);
-		swerve.stop();
+		if(!interrupted){
+			swerve.stop();
+		}
 	}
 }

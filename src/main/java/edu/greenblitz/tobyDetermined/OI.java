@@ -131,7 +131,7 @@ public class OI { //GEVALD
 		//intake and belly
 
         RotatingBelly.getInstance().setDefaultCommand(new RotateByTrigger(getSecondJoystick()));
-        secondJoystick.L1.and(secondJoystick.R1.negate()).whileTrue(new FullOpenIntake().alongWith(new GoToPosition(RobotMap.TelescopicArm.PresetPositions.PRE_INTAKE_GRAB_POSITION))).onFalse(new FullIntake());
+        secondJoystick.L1.and(secondJoystick.R1.negate()).whileTrue(new FullOpenIntake().alongWith(new GoToPosition(RobotMap.TelescopicArm.PresetPositions.PRE_INTAKE_CONE_POSITION))).onFalse(new FullIntake());
 		secondJoystick.L1.and(secondJoystick.B).whileTrue(new RollByConst(-1));
 		
     }
