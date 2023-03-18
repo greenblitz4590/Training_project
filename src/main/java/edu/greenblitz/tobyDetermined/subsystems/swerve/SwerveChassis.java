@@ -8,6 +8,7 @@ import edu.greenblitz.tobyDetermined.subsystems.Photonvision;
 import edu.greenblitz.utils.PigeonGyro;
 import edu.greenblitz.utils.PitchRollAdder;
 import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -20,6 +21,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -27,6 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.photonvision.EstimatedRobotPose;
 
 import java.util.Optional;
+
+import static edu.greenblitz.tobyDetermined.RobotMap.Vision.STANDARD_DEVIATION_VISION_COEFFICIENT;
 
 public class SwerveChassis extends GBSubsystem {
 	
@@ -66,7 +71,6 @@ public class SwerveChassis extends GBSubsystem {
 				new MatBuilder<>(Nat.N3(), Nat.N1()).fill(RobotMap.Vision.STANDARD_DEVIATION_ODOMETRY, RobotMap.Vision.STANDARD_DEVIATION_ODOMETRY, RobotMap.Vision.STANDARD_DEVIATION_ODOMETRY),
 				new MatBuilder<>(Nat.N3(), Nat.N1()).fill(RobotMap.Vision.STANDARD_DEVIATION_VISION2D, RobotMap.Vision.STANDARD_DEVIATION_VISION2D, RobotMap.Vision.STANDARD_DEVIATION_VISION_ANGLE));
 		SmartDashboard.putData("field", getField());
-		SmartDashboard.putData("field", getField());
 	}
 	
 	
@@ -86,6 +90,7 @@ public class SwerveChassis extends GBSubsystem {
 	public void periodic() {
 		updatePoseEstimationLimeLight();
 		field.setRobotPose(getRobotPose());
+		MultiLimelight.getInstance().getFirstAvailableTarget().ifPresent((pose) -> field.getObject("vision").setPose(pose.getFirst()));
 	}
 	
 	public void resetAll(Pose2d pose) {
@@ -283,7 +288,10 @@ public class SwerveChassis extends GBSubsystem {
 	private void addVisionMeasurement(Pair<Pose2d, Double> poseTimestampPair) {
 		Pose2d visionPose = poseTimestampPair.getFirst();
 		if (!(visionPose.getTranslation().getDistance(SwerveChassis.getInstance().getRobotPose().getTranslation()) > RobotMap.Vision.MIN_DISTANCE_TO_FILTER_OUT)) {
-			poseEstimator.addVisionMeasurement(visionPose, poseTimestampPair.getSecond());
+			double translationVelocity = Math.hypot(getChassisSpeeds().vxMetersPerSecond, getChassisSpeeds().vyMetersPerSecond);
+			double limelightVelocity = (translationVelocity + RobotMap.Vision.LIMELIGHT_RADIUS);
+			double currentStdDev = STANDARD_DEVIATION_VISION_COEFFICIENT * limelightVelocity;
+			poseEstimator.addVisionMeasurement(visionPose, poseTimestampPair.getSecond(),new MatBuilder<>(Nat.N3(), Nat.N1()).fill(currentStdDev,currentStdDev, RobotMap.Vision.STANDARD_DEVIATION_VISION_ANGLE));
 		}
 	}
 	

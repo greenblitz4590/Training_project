@@ -64,8 +64,10 @@ public class RobotMap {
         public static double STANDARD_DEVIATION_VISION2D = 0.3;
         public static double STANDARD_DEVIATION_VISION_ANGLE = 0.1;
         public static final int[] PORT_NUMBERS = {5800, 5801, 5802, 5803, 5804, 5805};
-        public static final Transform3d ROBOT_TO_CAMERA = new Transform3d(new Translation3d(), new Rotation3d());
+        public static final double LIMELIGHT_RADIUS = 0.346;
         public final static double MIN_DISTANCE_TO_FILTER_OUT = 1;
+        
+        public final static double STANDARD_DEVIATION_VISION_COEFFICIENT = 0.8;
 
 
     }
