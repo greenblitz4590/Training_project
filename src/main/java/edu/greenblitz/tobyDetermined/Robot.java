@@ -35,11 +35,11 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		CommandScheduler.getInstance().enable();
 		initSubsystems();
-		LiveWindow.disableAllTelemetry();
-		initPortForwarding();
-		AutonomousSelector.getInstance();
-		//swerve
-		Extender.getInstance().setIdleMode(CANSparkMax.IdleMode.kCoast);
+//		LiveWindow.disableAllTelemetry();
+//		initPortForwarding();
+//		AutonomousSelector.getInstance();
+//		swerve
+//		Extender.getInstance().setIdleMode(CANSparkMax.IdleMode.kCoast);
 		SwerveChassis.getInstance().resetChassisPose();
 		SwerveChassis.getInstance().resetAllEncoders();
 //		SwerveChassis.getInstance().resetEncodersByCalibrationRod();
@@ -51,17 +51,17 @@ public class Robot extends TimedRobot {
 	}
 	
 	private static void initSubsystems() {
-		MultiLimelight.init();
-		Dashboard.init();
-		LED.init();
-		Battery.init();
-		Extender.init();
-		Elbow.init();
-		Claw.init();
+//		MultiLimelight.init();
+//		Dashboard.init();
+//		LED.init();
+//		Battery.init();
+//		Extender.init();
+//		Elbow.init();
+//		Claw.init();
 		SwerveChassis.init();
-		RotatingBelly.init();
-		IntakeExtender.init();
-		IntakeRoller.init();
+//		RotatingBelly.init();
+//		IntakeExtender.init();
+//		IntakeRoller.init();
 		OI.init();
 	}
 	
@@ -91,20 +91,6 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		CommandScheduler.getInstance().cancelAll();
 
-		Grid.init();
-		MultiLimelight.getInstance().updateRobotPoseAlliance();
-		Dashboard.getInstance().activateDriversDashboard();
-		SwerveChassis.getInstance().setIdleModeBrake();
-		Extender.getInstance().setIdleMode(CANSparkMax.IdleMode.kBrake);
-		if (Extender.getInstance().DoesSensorExist && !Extender.getInstance().DidReset()) {
-			new ResetExtender().schedule();
-		}
-		if (Battery.getInstance().getCurrentVoltage() < 10){
-			LED.getInstance().setColor(Color.kBlue);
-		} else {
-			LED.getInstance().setColor(Color.kGreen);
-		}
-		Claw.getInstance().setDefaultCommand(new DefaultRotateWhenCube());
 	}
 	
 	
@@ -118,24 +104,6 @@ public class Robot extends TimedRobot {
    */
 	@Override
 	public void autonomousInit() {
-		Command command = AutonomousSelector.getInstance().getChosenValue().autonomousCommand;
-		Claw.getInstance().coneCatchMode();
-		Grid.init();
-		Extender.getInstance().setIdleMode(CANSparkMax.IdleMode.kBrake);
-		MultiLimelight.getInstance().updateRobotPoseAlliance();
-		Dashboard.getInstance().activateDriversDashboard();
-		SwerveChassis.getInstance().setIdleModeBrake();
-		SwerveChassis.getInstance().setAngleMotorsIdleMode(CANSparkMax.IdleMode.kBrake);
-		ObjectSelector.selectCone();
-		if (!SwerveChassis.getInstance().isEncoderBroken()) {
-			SwerveChassis.getInstance().resetAllEncoders();
-		} else {
-			SwerveChassis.getInstance().resetEncodersByCalibrationRod();
-		}
-
-		if (Extender.getInstance().DoesSensorExist && !Extender.getInstance().DidReset()) {
-			new ResetExtender().andThen(command).schedule();
-		} else command.schedule();
 	}
 	
 	@Override
@@ -149,30 +117,6 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void disabledPeriodic() {
-//		if (SwerveChassis.getInstance().isEncoderBroken() || !Extender.getInstance().DidReset()) {
-//			LED.getInstance().setColor(Color.kRed);
-//		}else{
-//			LED.getInstance().setColor(Color.kGreen);
-//		}
-		if (SwerveChassis.getInstance().isEncoderBroken()){
-			if (Extender.getInstance().DidReset()){
-				LED.getInstance().setColor(new Color(136, 8 ,90)); //dark red
-			} else {
-				LED.getInstance().setColor(Color.kRed);
-			}
-			
-		} else if (!Extender.getInstance().DidReset()){
-			LED.getInstance().setColor(Color.kOrangeRed);
-		} else {
-			LED.getInstance().setColor(Color.kGreen);
-		}
-	
-		if(Extender.getInstance().getLimitSwitch()){
-			if (Extender.getInstance().getLength() > 0 || !Extender.getInstance().DidReset()) {
-				Extender.getInstance().resetLength();
-			}
-		}
-		SwerveChassis.getInstance().isEncoderBroken();
 	}
 	
 	public enum robotName {
