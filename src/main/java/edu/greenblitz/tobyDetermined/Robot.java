@@ -41,8 +41,8 @@ public class Robot extends TimedRobot {
 //		swerve
 //		Extender.getInstance().setIdleMode(CANSparkMax.IdleMode.kCoast);
 		SwerveChassis.getInstance().resetChassisPose();
-		SwerveChassis.getInstance().resetAllEncoders();
-//		SwerveChassis.getInstance().resetEncodersByCalibrationRod();
+//		SwerveChassis.getInstance().resetAllEncoders();
+		SwerveChassis.getInstance().resetEncodersByCalibrationRod();
 		
 	}
 	

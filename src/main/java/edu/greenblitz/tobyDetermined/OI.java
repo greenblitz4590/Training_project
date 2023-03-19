@@ -65,7 +65,7 @@ public class OI { //GEVALD
 	
 	private void initButtons() {
 		SwerveChassis.getInstance().setDefaultCommand(new CombineJoystickMovement(false));
-
+		mainJoystick.Y.onTrue(new InstantCommand(()-> SwerveChassis.getInstance().resetChassisPose()));
 //		amireeeButtons();
 //		romyButtons();
 	}
