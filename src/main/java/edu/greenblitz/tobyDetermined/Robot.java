@@ -3,6 +3,7 @@ package edu.greenblitz.tobyDetermined;
 import com.revrobotics.CANSparkMax;
 import edu.greenblitz.tobyDetermined.commands.ConsoleLog;
 import edu.greenblitz.tobyDetermined.commands.swerve.MoveToGrid.Grid;
+import edu.greenblitz.tobyDetermined.commands.swerve.measurement.CalibratePID;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.DefaultRotateWhenCube;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.GripConeFromBelly;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.extender.ResetExtender;
@@ -92,6 +93,7 @@ public class Robot extends TimedRobot {
 	
 	public void teleopInit() {
 		CommandScheduler.getInstance().cancelAll();
+		new CalibratePID();
 
 		Grid.init();
 		MultiLimelight.getInstance().updateRobotPoseAlliance();

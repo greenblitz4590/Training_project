@@ -77,7 +77,7 @@ public class SwerveChassis extends GBSubsystem {
 		return instance;
 	}
 	
-	
+
 	public static void init() {
 		if (instance == null) {
 			instance = new SwerveChassis();
@@ -98,7 +98,7 @@ public class SwerveChassis extends GBSubsystem {
 	/**
 	 * @return returns the swerve module based on its name
 	 */
-	public SwerveModule getModule(Module module) { //TODO make private
+	public SwerveModule getModule(Module module) {
 		switch (module) {
 			case BACK_LEFT:
 				return backLeft;
