@@ -1,15 +1,23 @@
 package edu.greenblitz.tobyDetermined.commands.intake.roller;
 
 import edu.greenblitz.tobyDetermined.RobotMap;
+import edu.greenblitz.tobyDetermined.f2022.Gripper;
+import edu.greenblitz.tobyDetermined.f2022.RunFunnel;
+import edu.greenblitz.utils.GBCommand;
 
-public class RunRoller extends RollerCommand {
+public class RunRoller extends GBCommand {
+	
+	public RunRoller(){
+		require(Gripper.getInstance());
+	}
+	
 	@Override
 	public void execute() {
-		roller.roll(RobotMap.Intake.DEFAULT_POWER);
+		Gripper.getInstance().setPower(1);
 	}
 
 	@Override
 	public void end(boolean interrupted) {
-		roller.stop();
+		Gripper.getInstance().stop();
 	}
 }

@@ -4,6 +4,7 @@ import edu.greenblitz.tobyDetermined.commands.MultiSystem.*;
 import edu.greenblitz.tobyDetermined.commands.MultiSystem.FullIntake;
 import edu.greenblitz.tobyDetermined.commands.SystemCheck.SystemCheck;
 import edu.greenblitz.tobyDetermined.commands.intake.roller.RollByConst;
+import edu.greenblitz.tobyDetermined.commands.intake.roller.RunRoller;
 import edu.greenblitz.tobyDetermined.commands.rotatingBelly.*;
 import edu.greenblitz.tobyDetermined.commands.rotatingBelly.bellyPusher.AutoDropCone;
 import edu.greenblitz.tobyDetermined.commands.rotatingBelly.bellyPusher.PushCone;
@@ -18,6 +19,8 @@ import edu.greenblitz.tobyDetermined.commands.telescopicArm.elbow.ElbowMoveByJoy
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.extender.ExtenderMoveByJoysticks;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.goToPosition.GoToPosition;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.goToPosition.ZigHail;
+import edu.greenblitz.tobyDetermined.f2022.RunFunnel;
+import edu.greenblitz.tobyDetermined.f2022.ShootByConstant;
 import edu.greenblitz.tobyDetermined.subsystems.RotatingBelly.RotatingBelly;
 import edu.greenblitz.tobyDetermined.commands.swerve.CombineJoystickMovement;
 import edu.greenblitz.tobyDetermined.commands.swerve.DriveSidewaysUntilEdge;
@@ -67,8 +70,15 @@ public class OI { //GEVALD
 	
 	
 	private void initButtons() {
-		amireeeButtons();
-		romyButtons();
+		
+		secondJoystick.X.whileTrue(new RunFunnel());
+		secondJoystick.B.whileTrue(new ShootByConstant(0.8));
+		secondJoystick.A.whileTrue(new RunRoller());
+
+
+
+//		amireeeButtons();
+//		romyButtons();
 	}
 
 	public void romyButtons() {
