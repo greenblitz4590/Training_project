@@ -12,6 +12,7 @@ import edu.greenblitz.tobyDetermined.commands.rotatingBelly.rotateAutomation.Tim
 import edu.greenblitz.tobyDetermined.commands.swerve.MoveToGrid.*;
 import edu.greenblitz.tobyDetermined.commands.Auto.balance.LockWheels;
 import edu.greenblitz.tobyDetermined.commands.Auto.balance.bangBangBalance.FullBalance;
+import edu.greenblitz.tobyDetermined.commands.swerve.RotateAllWheelsToAngle;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.RewritePresetPosition;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.claw.*;
 import edu.greenblitz.tobyDetermined.commands.telescopicArm.elbow.ElbowMoveByJoysticks;
@@ -27,6 +28,7 @@ import edu.greenblitz.tobyDetermined.subsystems.telescopicArm.Elbow;
 import edu.greenblitz.tobyDetermined.subsystems.telescopicArm.Extender;
 import edu.greenblitz.tobyDetermined.subsystems.telescopicArm.ObjectSelector;
 import edu.greenblitz.utils.hid.SmartJoystick;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -67,8 +69,13 @@ public class OI { //GEVALD
 	
 	
 	private void initButtons() {
-		amireeeButtons();
-		romyButtons();
+//		amireeeButtons();
+//		romyButtons();
+		
+		SwerveChassis.getInstance().setDefaultCommand(new CombineJoystickMovement(false));
+		mainJoystick.A.whileTrue(new RotateAllWheelsToAngle(Units.degreesToRadians(30)));
+		mainJoystick.B.whileTrue(new RotateAllWheelsToAngle(Units.degreesToRadians(90)));
+		mainJoystick.X.whileTrue(new RotateAllWheelsToAngle(Units.degreesToRadians(150)));
 	}
 
 	public void romyButtons() {

@@ -206,6 +206,16 @@ public class KazaSwerveModule implements SwerveModule {
 		return false;
 	}
 	
+	@Override
+	public PIDObject getAngularPIDObject() {
+		return null;
+	}
+	
+	@Override
+	public void setAngularPIDObject(PIDObject pid) {
+	
+	}
+	
 	public static class KazaSwerveModuleConfigObject {
 		private int angleMotorID;
 		private int linearMotorID;

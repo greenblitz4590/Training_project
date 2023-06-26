@@ -24,10 +24,11 @@ public class RotateAllWheelsToAngle extends SwerveCommand {
 	
 	@Override
 	public boolean isFinished() {
-		boolean allInPlace = true;
-		for (SwerveChassis.Module  module: SwerveChassis.Module.values()) {
-			allInPlace &= swerve.moduleIsAtAngle(module,targetAngle, threshold);
-		}
-		return allInPlace || timeOutCounter > 50;
+		return false;
+//		boolean allInPlace = true;
+//		for (SwerveChassis.Module  module: SwerveChassis.Module.values()) {
+//			allInPlace &= swerve.moduleIsAtAngle(module,targetAngle, threshold);
+//		}
+//		return allInPlace /*|| timeOutCounter > 50*/;
 	}
 }

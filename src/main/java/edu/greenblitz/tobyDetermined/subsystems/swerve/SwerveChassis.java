@@ -5,6 +5,7 @@ import edu.greenblitz.tobyDetermined.RobotMap;
 import edu.greenblitz.tobyDetermined.subsystems.GBSubsystem;
 import edu.greenblitz.tobyDetermined.subsystems.Limelight.MultiLimelight;
 import edu.greenblitz.tobyDetermined.subsystems.Photonvision;
+import edu.greenblitz.utils.PIDObject;
 import edu.greenblitz.utils.PigeonGyro;
 import edu.greenblitz.utils.PitchRollAdder;
 import edu.wpi.first.math.MatBuilder;
@@ -21,6 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -69,6 +71,8 @@ public class SwerveChassis extends GBSubsystem {
 				new MatBuilder<>(Nat.N3(), Nat.N1()).fill(RobotMap.Vision.STANDARD_DEVIATION_VISION2D, RobotMap.Vision.STANDARD_DEVIATION_VISION2D, RobotMap.Vision.STANDARD_DEVIATION_VISION_ANGLE));
 		SmartDashboard.putData("field", getField());
 		SmartDashboard.putData("field", getField());
+		updatePIDOnDashboard();
+		pidTimer.start();
 	}
 	
 	
@@ -84,11 +88,34 @@ public class SwerveChassis extends GBSubsystem {
 		}
 	}
 	
+	Timer pidTimer = new Timer();
 	@Override
 	public void periodic() {
 		
 		updatePoseEstimationLimeLight();
 		field.setRobotPose(getRobotPose());
+		if (pidTimer.advanceIfElapsed(1)) {
+			updatePIDToMotors(
+					SmartDashboard.getNumber("P", 0),
+					SmartDashboard.getNumber("I", 0),
+					SmartDashboard.getNumber("D", 0),
+					SmartDashboard.getNumber("IZone", 0)
+			);
+		}
+	}
+
+	public void updatePIDOnDashboard (){
+		SmartDashboard.putNumber("P",getModule(Module.BACK_LEFT).getAngularPIDObject().getKp());
+		SmartDashboard.putNumber("I",getModule(Module.BACK_LEFT).getAngularPIDObject().getKi());
+		SmartDashboard.putNumber("D",getModule(Module.BACK_LEFT).getAngularPIDObject().getKd());
+		SmartDashboard.putNumber("IZone",getModule(Module.BACK_LEFT).getAngularPIDObject().getIZone());
+	}
+	
+	public void updatePIDToMotors (double p,double i,double d,double IZone){
+		PIDObject pid = new PIDObject(p,i,d).withMaxPower(1).withIZone(IZone);
+		for (Module m : Module.values()){
+			SwerveChassis.getInstance().getModule(m).setAngularPIDObject(pid);
+		}
 	}
 	
 	public void resetAll(Pose2d pose) {

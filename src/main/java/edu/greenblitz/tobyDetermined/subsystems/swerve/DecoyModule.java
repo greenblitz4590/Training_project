@@ -138,4 +138,14 @@ public class DecoyModule implements SwerveModule {
 	public boolean isEncoderBroken() {
 		return false;
 	}
+	
+	@Override
+	public PIDObject getAngularPIDObject() {
+		return null;
+	}
+	
+	@Override
+	public void setAngularPIDObject(PIDObject pid) {
+	
+	}
 }

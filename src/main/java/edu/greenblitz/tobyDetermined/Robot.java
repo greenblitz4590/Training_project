@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().run();
 		RoborioUtils.updateCurrentCycleTime();
 		SmartDashboard.putBoolean("encoderBroken", SwerveChassis.getInstance().isEncoderBroken());
+		
 	}
 	
 	

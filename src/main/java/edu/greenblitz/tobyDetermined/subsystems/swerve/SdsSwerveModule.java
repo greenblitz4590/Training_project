@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.CANCoder;
 import edu.greenblitz.tobyDetermined.RobotMap;
 import edu.greenblitz.tobyDetermined.subsystems.Battery;
@@ -26,12 +27,17 @@ public class SdsSwerveModule implements SwerveModule {
 	private CANCoder canCoder;
 	private SimpleMotorFeedforward feedforward;
 	private double encoderOffset;
+	private PIDObject angularPIDObject;
 
 	public SdsSwerveModule(int angleMotorID, int linearMotorID, int AbsoluteEncoderID, double encoderOffset, boolean linInverted) {
 		//SET ANGLE MOTO
 		angleMotor = new GBFalcon(angleMotorID);
 		angleMotor.config(new GBFalcon.FalconConfObject(RobotMap.Swerve.SdsSwerve.baseAngConfObj));
-
+		angularPIDObject = RobotMap.Swerve.SdsSwerve.baseAngConfObj.getPidObject();
+		angleMotor.configMotionAcceleration(2000* RobotMap.Swerve.SdsSwerve.ANG_GEAR_RATIO);
+		angleMotor.configMotionCruiseVelocity(680* RobotMap.Swerve.SdsSwerve.ANG_GEAR_RATIO);
+		
+		
 		linearMotor = new GBFalcon(linearMotorID);
 		linearMotor.config(new GBFalcon.FalconConfObject(RobotMap.Swerve.SdsSwerve.baseLinConfObj).withInverted(linInverted));
 
@@ -77,9 +83,12 @@ public class SdsSwerveModule implements SwerveModule {
 		diff -= diff > Math.PI ? 2 * Math.PI : 0;
 		angleInRads = getModuleAngle() + diff;
 
-		angleMotor.set(ControlMode.Position, convertRadsToTicks(angleInRads));
+		
+		
+		angleMotor.set(ControlMode.MotionMagic, convertRadsToTicks(angleInRads));
 		
 		targetAngle = angleInRads;
+		
 	}
 	
 	/**
@@ -273,4 +282,16 @@ public class SdsSwerveModule implements SwerveModule {
 	public boolean isEncoderBroken() {
 		return canCoder.getFirmwareVersion() == -1;
 	}
+	
+	@Override
+	public PIDObject getAngularPIDObject() {
+		return angularPIDObject;
+	}
+	
+	@Override
+	public void setAngularPIDObject(PIDObject pid) {
+		this.angleMotor.configPID(pid);
+		this.angularPIDObject = pid;
+	}
+	
 }
